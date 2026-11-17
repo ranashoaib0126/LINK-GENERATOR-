@@ -1,4 +1,8 @@
 
+/* =========================
+   VIDORA - PREMIUM WHITE UI
+========================= */
+
 * {
   margin: 0;
   padding: 0;
@@ -21,6 +25,11 @@ a {
   color: inherit;
 }
 
+button,
+input {
+  font: inherit;
+}
+
 /* NAVBAR */
 
 .navbar {
@@ -31,6 +40,8 @@ a {
   align-items: center;
   border-bottom: 1px solid #eeeeee;
   background: #ffffff;
+  position: relative;
+  z-index: 10;
 }
 
 .logo {
@@ -40,31 +51,31 @@ a {
   color: #202124;
 }
 
-.logo span,
-.logo b {
+.logo span {
   color: #e84b55;
 }
 
-.logo b {
+.logo small {
+  color: #e84b55;
   font-size: 30px;
 }
 
-nav {
+.nav-links {
   display: flex;
   gap: 35px;
 }
 
-nav a {
+.nav-links a {
   color: #666b73;
   font-size: 13px;
   transition: .3s;
 }
 
-nav a:hover {
+.nav-links a:hover {
   color: #e84b55;
 }
 
-.nav-btn {
+.nav-button {
   border: 1px solid #e5e5e5;
   border-radius: 8px;
   padding: 12px 18px;
@@ -74,13 +85,13 @@ nav a:hover {
   transition: .3s;
 }
 
-.nav-btn:hover {
+.nav-button:hover {
   background: #e84b55;
   color: #fff;
   border-color: #e84b55;
 }
 
-/* HERO SECTION */
+/* HERO */
 
 .hero {
   position: relative;
@@ -113,7 +124,7 @@ nav a:hover {
   max-width: 850px;
 }
 
-.badge {
+.top-badge {
   display: inline-flex;
   align-items: center;
   gap: 9px;
@@ -127,7 +138,7 @@ nav a:hover {
   margin-bottom: 27px;
 }
 
-.dot {
+.live-dot {
   width: 7px;
   height: 7px;
   background: #e84b55;
@@ -135,7 +146,7 @@ nav a:hover {
   box-shadow: 0 0 10px rgba(232,75,85,.3);
 }
 
-h1 {
+.hero h1 {
   font-size: clamp(45px, 7vw, 76px);
   line-height: 1.12;
   letter-spacing: -3px;
@@ -143,11 +154,11 @@ h1 {
   color: #202124;
 }
 
-h1 span {
+.hero h1 span {
   color: #e84b55;
 }
 
-.subtitle {
+.hero-description {
   color: #777e87;
   max-width: 550px;
   margin: 23px auto 35px;
@@ -155,9 +166,9 @@ h1 span {
   line-height: 1.9;
 }
 
-/* DOWNLOAD INPUT BOX */
+/* INPUT CARD */
 
-.download-box {
+.download-card {
   max-width: 750px;
   margin: auto;
   display: flex;
@@ -167,9 +178,15 @@ h1 span {
   border-radius: 13px;
   padding: 9px;
   box-shadow: 0 8px 30px rgba(0,0,0,.045);
+  transition: .3s;
 }
 
-.input-area {
+.download-card:focus-within {
+  border-color: #e8a0a5;
+  box-shadow: 0 8px 30px rgba(232,75,85,.09);
+}
+
+.input-wrapper {
   flex: 1;
   min-width: 0;
   display: flex;
@@ -178,12 +195,12 @@ h1 span {
   padding: 0 12px;
 }
 
-.input-area > span {
+.input-icon {
   color: #e84b55;
   font-size: 23px;
 }
 
-.input-area input {
+.input-wrapper input {
   flex: 1;
   min-width: 0;
   background: transparent;
@@ -193,19 +210,24 @@ h1 span {
   font-size: 14px;
 }
 
-.input-area input::placeholder {
+.input-wrapper input::placeholder {
   color: #a1a1aa;
 }
 
-.input-area button {
+.clear-button {
   border: none;
   background: none;
-  color: #777;
+  color: #999;
   cursor: pointer;
   padding: 8px;
+  transition: .2s;
 }
 
-.main-btn {
+.clear-button:hover {
+  color: #e84b55;
+}
+
+.download-button {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -221,8 +243,8 @@ h1 span {
   transition: .3s;
 }
 
-.main-btn:hover,
-.download-file-btn:hover {
+.download-button:hover,
+.file-download-button:hover {
   background: #cf3742;
   transform: translateY(-2px);
 }
@@ -233,7 +255,7 @@ button:disabled {
   transform: none;
 }
 
-.hint {
+.input-hint {
   color: #9298a1;
   margin-top: 17px;
   font-size: 11px;
@@ -245,7 +267,8 @@ button:disabled {
   margin-top: 48px;
 }
 
-.platforms > p {
+.platforms > span {
+  display: block;
   color: #9298a1;
   font-size: 10px;
   letter-spacing: 2px;
@@ -259,7 +282,10 @@ button:disabled {
   flex-wrap: wrap;
 }
 
-.platform-list span {
+.platform-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   padding: 10px 15px;
   border: 1px solid #ededed;
   border-radius: 8px;
@@ -269,30 +295,45 @@ button:disabled {
   transition: .3s;
 }
 
-.platform-list span:hover {
+.platform-item:hover {
   border-color: #e84b55;
   color: #e84b55;
   background: #fff7f7;
 }
 
-/* RESULT SECTION */
+.youtube-icon,
+.instagram-icon,
+.tiktok-icon,
+.facebook-icon,
+.twitter-icon,
+.direct-icon {
+  font-weight: 800;
+  color: #e84b55;
+}
+
+/* RESULTS */
 
 .result-section {
   max-width: 800px;
   margin: auto;
-  padding: 0 20px 50px;
+  padding: 0 20px 55px;
 }
 
-.status {
+.status-message {
   text-align: center;
   font-size: 13px;
   color: #e84b55;
   margin-bottom: 20px;
-  line-height: 1.6;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
 }
 
-.status.success {
+.status-message.success {
   color: #16a36a;
+}
+
+.status-message.error {
+  color: #dc3545;
 }
 
 .preview-card {
@@ -303,7 +344,7 @@ button:disabled {
   box-shadow: 0 10px 35px rgba(0,0,0,.05);
 }
 
-.preview-heading,
+.preview-header,
 .video-details {
   display: flex;
   justify-content: space-between;
@@ -311,23 +352,23 @@ button:disabled {
   gap: 15px;
 }
 
-.preview-heading {
+.preview-header {
   margin-bottom: 20px;
 }
 
-.preview-heading h2 {
+.preview-header h2 {
   margin-top: 7px;
   font-size: 21px;
   color: #252525;
 }
 
-.eyebrow {
+.preview-label {
   color: #e84b55;
   font-size: 10px;
   letter-spacing: 2px;
 }
 
-.ready-label {
+.preview-status {
   color: #16a36a;
   font-size: 11px;
   border: 1px solid #ccebdc;
@@ -337,6 +378,7 @@ button:disabled {
 }
 
 .preview-card video {
+  display: block;
   width: 100%;
   max-height: 420px;
   background: #f2f2f2;
@@ -347,14 +389,24 @@ button:disabled {
   margin-top: 20px;
 }
 
-.video-details h3 {
+.info-label {
+  color: #9298a1;
+  font-size: 10px;
+  letter-spacing: 1px;
+}
+
+.video-info {
+  min-width: 0;
+}
+
+.video-info h3 {
   margin-top: 7px;
   font-size: 14px;
   color: #303030;
   overflow-wrap: anywhere;
 }
 
-.download-file-btn {
+.file-download-button {
   border: none;
   background: #e84b55;
   color: white;
@@ -363,36 +415,38 @@ button:disabled {
   font-weight: 700;
   cursor: pointer;
   transition: .3s;
+  white-space: nowrap;
 }
 
 .hidden {
   display: none !important;
 }
 
-/* GENERAL SECTIONS */
+/* SECTION HEADINGS */
 
-.section {
+.features-section,
+.how-section {
   padding: 95px 9%;
 }
 
-.features {
+.features-section {
   background: #f8f9fb;
 }
 
-.section-heading {
+.section-title {
   text-align: center;
   margin-bottom: 45px;
 }
 
-.section-heading > span,
-.about > div:first-child > span {
+.section-title > span,
+.about-content > span {
   color: #e84b55;
   font-size: 11px;
   letter-spacing: 3px;
 }
 
-.section-heading h2,
-.about h2 {
+.section-title h2,
+.about-content h2 {
   font-size: clamp(30px, 4vw, 42px);
   letter-spacing: -1.5px;
   margin-top: 16px;
@@ -400,12 +454,11 @@ button:disabled {
   color: #202124;
 }
 
-.section-heading h2 em {
+.section-title h2 span {
   color: #e84b55;
-  font-style: normal;
 }
 
-.section-heading p {
+.section-title p {
   color: #858b94;
   margin-top: 15px;
   font-size: 13px;
@@ -457,9 +510,7 @@ button:disabled {
   line-height: 1.8;
 }
 
-.step-card {
-  background: #ffffff;
-}
+/* HOW IT WORKS */
 
 .step-number {
   display: block;
@@ -469,17 +520,18 @@ button:disabled {
   margin-bottom: 20px;
 }
 
-/* ABOUT SECTION */
+/* ABOUT */
 
-.about {
+.about-section {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 30px;
+  padding: 95px 9%;
   background: #ffffff;
 }
 
-.about p {
+.about-content p {
   color: #777e87;
   max-width: 500px;
   font-size: 14px;
@@ -499,7 +551,7 @@ button:disabled {
 
 /* FOOTER */
 
-footer {
+.footer {
   border-top: 1px solid #eeeeee;
   background: #fafafa;
   padding: 30px 9%;
@@ -509,25 +561,26 @@ footer {
   gap: 20px;
 }
 
-footer p,
-footer > a:last-child {
+.footer p,
+.footer .back-top {
   color: #858b94;
   font-size: 12px;
 }
 
-footer > a:last-child:hover {
+.footer .back-top:hover {
   color: #e84b55;
 }
 
-/* RESPONSIVE DESIGN */
+/* RESPONSIVE */
 
 @media (max-width: 750px) {
+
   .navbar {
     padding: 0 5%;
     height: 72px;
   }
 
-  nav {
+  .nav-links {
     display: none;
   }
 
@@ -536,19 +589,19 @@ footer > a:last-child:hover {
     padding: 80px 18px;
   }
 
-  h1 {
+  .hero h1 {
     letter-spacing: -2px;
   }
 
-  .download-box {
+  .download-card {
     flex-direction: column;
   }
 
-  .input-area {
+  .input-wrapper {
     min-height: 48px;
   }
 
-  .main-btn {
+  .download-button {
     width: 100%;
   }
 
@@ -561,7 +614,12 @@ footer > a:last-child:hover {
     grid-template-columns: 1fr;
   }
 
-  .section {
+  .features-section,
+  .how-section {
+    padding: 70px 6%;
+  }
+
+  .about-section {
     padding: 70px 6%;
   }
 
@@ -574,9 +632,32 @@ footer > a:last-child:hover {
     align-items: stretch;
   }
 
-  footer {
+  .file-download-button {
+    width: 100%;
+  }
+
+  .footer {
     flex-direction: column;
     text-align: center;
     padding: 30px 5%;
+  }
+}
+
+@media (max-width: 400px) {
+  .logo {
+    font-size: 23px;
+  }
+
+  .nav-button {
+    padding: 10px 12px;
+    font-size: 11px;
+  }
+
+  .hero h1 {
+    font-size: 43px;
+  }
+
+  .preview-card {
+    padding: 15px;
   }
 }
