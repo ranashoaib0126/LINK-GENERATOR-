@@ -1,108 +1,229 @@
 
-const express = require("express");
-const cors = require("cors");
+/* =========================
+   VIDORA FRONTEND
+========================= */
 
-const app = express();
-const PORT = process.env.PORT || 10000;
+// IMPORTANT:
+// Local testing: uses localhost automatically.
+// Live website: replace the Render URL below with your backend URL.
 
-app.use(cors({
-  origin: [
-    "https://ranashoaib0126.github.io",
-    "http://localhost:5500"
-  ]
-}));
+const API_BASE_URL =
+  ["localhost", "127.0.0.1"].includes(window.location.hostname)
+    ? "http://localhost:10000"
+    : "https://YOUR-RENDER-BACKEND.onrender.com";
 
-app.use(express.json({ limit: "10kb" }));
+// HTML ELEMENTS
 
-app.get("/api/health", (req, res) => {
-  res.json({
-    success: true,
-    service: "VIDORA API",
-    status: "online"
-  });
-});
+const videoForm = document.getElementById("videoForm");
+const videoURL = document.getElementById("videoURL");
+const previewBtn = document.getElementById("previewBtn");
+const buttonText = document.getElementById("buttonText");
+const clearBtn = document.getElementById("clearBtn");
+const statusBox = document.getElementById("status");
+const previewArea = document.getElementById("previewArea");
+const videoPreview = document.getElementById("videoPreview");
+const videoName = document.getElementById("videoName");
+const downloadBtn = document.getElementById("downloadBtn");
 
-function detectPlatform(host) {
-  if (host === "youtube.com" || host.endsWith(".youtube.com") ||
-      host === "youtu.be") return "YouTube";
+let currentVideoURL = "";
+let isDirectVideo = false;
 
-  if (host === "instagram.com" ||
-      host.endsWith(".instagram.com")) return "Instagram";
+// SHOW STATUS
 
-  if (host === "tiktok.com" ||
-      host.endsWith(".tiktok.com")) return "TikTok";
+function showStatus(message, type = "") {
+  statusBox.textContent = message;
+  statusBox.className = "status-message";
 
-  if (host === "x.com" || host === "twitter.com" ||
-      host.endsWith(".x.com")) return "X";
-
-  if (host === "facebook.com" ||
-      host.endsWith(".facebook.com") ||
-      host === "fb.watch") return "Facebook";
-
-  return "Other";
+  if (type) {
+    statusBox.classList.add(type);
+  }
 }
 
-app.post("/api/inspect", (req, res) => {
-  const { url } = req.body || {};
+// GET FILE NAME
 
-  if (!url || typeof url !== "string" || url.length > 2048) {
-    return res.status(400).json({
-      success: false,
-      message: "Please provide a valid video URL."
-    });
+function getFileName(url) {
+  try {
+    const pathname = new URL(url).pathname;
+    const name = decodeURIComponent(pathname.split("/").pop());
+
+    return name || "Your Video";
+  } catch {
+    return "Your Video";
+  }
+}
+
+// LOADING STATE
+
+function setLoading(loading) {
+  previewBtn.disabled = loading;
+  buttonText.textContent = loading ? "Analyzing..." : "Analyze Link";
+}
+
+// CLEAR PREVIOUS PREVIEW
+
+function resetPreview() {
+  videoPreview.pause();
+  videoPreview.removeAttribute("src");
+  videoPreview.load();
+
+  previewArea.classList.add("hidden");
+
+  currentVideoURL = "";
+  isDirectVideo = false;
+}
+
+// VALIDATE URL ON FRONTEND
+
+function isValidURL(value) {
+  try {
+    const url = new URL(value);
+
+    return (
+      ["http:", "https:"].includes(url.protocol) &&
+      !url.username &&
+      !url.password
+    );
+  } catch {
+    return false;
+  }
+}
+
+// ANALYZE LINK
+
+async function analyzeVideo() {
+  const url = videoURL.value.trim();
+
+  resetPreview();
+
+  if (!url) {
+    showStatus("Please paste a video link first.", "error");
+    videoURL.focus();
+    return;
   }
 
-  let parsed;
+  if (!isValidURL(url)) {
+    showStatus("Please enter a valid HTTP or HTTPS URL.", "error");
+    return;
+  }
+
+  setLoading(true);
+  showStatus("Analyzing your video link...");
 
   try {
-    parsed = new URL(url);
-  } catch {
-    return res.status(400).json({
-      success: false,
-      message: "Invalid URL."
+    const response = await fetch(`${API_BASE_URL}/api/inspect`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ url })
     });
+
+    const data = await response.json();
+
+    if (!response.ok || !data.success) {
+      throw new Error(data.message || "Unable to analyze this link.");
+    }
+
+    showStatus(data.message, "success");
+
+    if (data.isDirectVideo) {
+      currentVideoURL = url;
+      isDirectVideo = true;
+
+      videoPreview.src = url;
+      videoName.textContent = getFileName(url);
+
+      previewArea.classList.remove("hidden");
+
+      videoPreview.onerror = () => {
+        resetPreview();
+        showStatus(
+          "This video cannot be previewed. The source may block browser access or the file may be unavailable.",
+          "error"
+        );
+      };
+
+      previewArea.scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+      });
+
+    } else {
+      resetPreview();
+    }
+
+  } catch (error) {
+    console.error("VIDORA Error:", error);
+
+    showStatus(
+      error.message.includes("Failed to fetch")
+        ? "Cannot connect to VIDORA server. Check your backend URL and server status."
+        : error.message,
+      "error"
+    );
+
+  } finally {
+    setLoading(false);
   }
+}
 
-  if (!["https:", "http:"].includes(parsed.protocol) ||
-      parsed.username || parsed.password) {
-    return res.status(400).json({
-      success: false,
-      message: "Only public HTTP/HTTPS URLs are accepted."
-    });
-  }
+// FORM SUBMISSION
 
-  const host = parsed.hostname.toLowerCase();
-  const platform = detectPlatform(host);
-
-  const isDirectVideo =
-    /\.(mp4|webm|mov|m4v)$/i.test(parsed.pathname);
-
-  let message;
-
-  if (isDirectVideo) {
-    message = "Direct video URL detected. Preview it in VIDORA.";
-  } else if (platform === "YouTube") {
-    message = "YouTube link detected. Use the official video player.";
-  } else if (platform === "Instagram") {
-    message = "Instagram link detected. Authorized media access is required.";
-  } else if (platform === "TikTok") {
-    message = "TikTok link detected. Use supported official integrations.";
-  } else if (platform === "X") {
-    message = "X link detected. Downloads depend on creator permissions.";
-  } else if (platform === "Facebook") {
-    message = "Facebook link detected. Authorized media access is required.";
-  } else {
-    message = "Other link detected. Direct video URLs are supported.";
-  }
-
-  res.json({
-    success: true,
-    platform,
-    isDirectVideo,
-    message
-  });
+videoForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  analyzeVideo();
 });
 
-app.listen(PORT, "0.0.0.0", () => {
-  console.log(`VIDORA API running on port ${PORT}`);
+// CLEAR BUTTON
+
+clearBtn.addEventListener("click", () => {
+  videoURL.value = "";
+  resetPreview();
+  showStatus("");
+  videoURL.focus();
 });
+
+// DOWNLOAD BUTTON
+
+downloadBtn.addEventListener("click", () => {
+  if (!currentVideoURL || !isDirectVideo) {
+    showStatus("No downloadable direct video is available.", "error");
+    return;
+  }
+
+  const downloadURL =
+    `${API_BASE_URL}/api/download?url=${encodeURIComponent(currentVideoURL)}`;
+
+  showStatus("Preparing your video download...", "success");
+
+  // The backend streams the authorized direct video file.
+  window.location.href = downloadURL;
+});
+
+// ENTER KEY IS HANDLED BY THE FORM
+
+videoURL.addEventListener("input", () => {
+  if (statusBox.textContent) {
+    showStatus("");
+  }
+});
+
+// CHECK BACKEND CONNECTION
+
+async function checkServer() {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/health`);
+    const data = await response.json();
+
+    if (!response.ok || !data.success) {
+      throw new Error("Server unavailable");
+    }
+
+    console.log("VIDORA server connected:", data.service);
+
+  } catch (error) {
+    console.warn("VIDORA backend is not connected yet:", error.message);
+  }
+}
+
+checkServer();
