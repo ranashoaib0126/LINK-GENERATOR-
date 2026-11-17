@@ -2,6 +2,7 @@
 {
   "name": "vidora-backend",
   "version": "1.0.0",
+  "private": true,
   "description": "VIDORA video utility backend",
   "main": "server.js",
   "scripts": {
@@ -12,4 +13,3 @@
     "express": "^5.1.0"
   }
 }
-
