@@ -4,179 +4,358 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#090909">
-  <meta name="description" content="VIDORA - Preview and download authorized video files.">
-  <title>VIDORA | Video Downloader</title>
+
+  <title>VIDORA - Video Link Analyzer</title>
+
+  <meta name="description" content="VIDORA is a simple video link analyzer and direct video download utility.">
+  <meta name="theme-color" content="#0b0b0b">
+
   <link rel="stylesheet" href="style.css">
+
+  <script src="script.js" defer></script>
 </head>
+
 <body>
 
-<header class="navbar">
-  <a href="#" class="logo">VID<span>ORA</span><b>.</b></a>
+  <!-- NAVBAR -->
+  <header class="navbar">
+    <div class="container nav-content">
 
-  <nav>
-    <a href="#home">Home</a>
-    <a href="#features">Features</a>
-    <a href="#how">How It Works</a>
-  </nav>
+      <a href="#" class="logo">
+        <span class="logo-icon">▶</span>
+        VIDORA<span class="logo-dot">.</span>
+      </a>
 
-  <a href="#home" class="nav-btn">Get Started ↗</a>
-</header>
+      <nav class="nav-links">
+        <a href="#home">Home</a>
+        <a href="#features">Features</a>
+        <a href="#how-it-works">How It Works</a>
+        <a href="#about">About</a>
+      </nav>
 
-<main>
-  <section class="hero" id="home">
-    <div class="hero-glow"></div>
+      <a href="#downloader" class="nav-button">
+        Get Started
+      </a>
 
-    <div class="hero-content">
-      <div class="badge">
-        <span class="dot"></span>
-        YOUR VIDEO UTILITY
-      </div>
+    </div>
+  </header>
 
-      <h1>Your Videos.<br><span>One Destination.</span></h1>
 
-      <p class="subtitle">
-        Paste your video link, preview supported content
-        and download videos you are authorized to access.
-      </p>
+  <!-- HERO SECTION -->
+  <main>
 
-      <div class="download-box">
-        <div class="input-area">
-          <span>↗</span>
-          <input
-            type="url"
-            id="videoURL"
-            placeholder="Paste your video link here..."
-            autocomplete="url"
-          >
-          <button id="clearBtn" aria-label="Clear URL">✕</button>
+    <section class="hero" id="home">
+
+      <div class="hero-content">
+
+        <div class="hero-badge">
+          <span class="status-dot"></span>
+          SIMPLE VIDEO LINK UTILITY
         </div>
 
-        <button id="previewBtn" class="main-btn">
-          <span id="buttonText">Analyze Link</span>
-          <span>→</span>
-        </button>
-      </div>
+        <h1>
+          Your Videos.<br>
+          <span>One Simple Place.</span>
+        </h1>
 
-      <p class="hint">
-        Direct MP4, WebM and compatible authorized sources.
-      </p>
+        <p>
+          Paste a video link, analyze its source, and access
+          supported video previews and downloads.
+        </p>
 
-      <div class="platforms">
-        <p>SUPPORTED SOURCE TYPES</p>
-        <div class="platform-list">
-          <span>▶ YouTube</span>
-          <span>◎ Instagram</span>
-          <span>♪ TikTok</span>
-          <span>f Facebook</span>
-          <span>𝕏 X</span>
-          <span>↓ Direct URL</span>
+        <a href="#downloader" class="primary-button">
+          Start Now <span>→</span>
+        </a>
+
+        <div class="hero-stats">
+          <div>
+            <strong>Fast</strong>
+            <small>Link Analysis</small>
+          </div>
+
+          <div>
+            <strong>Easy</strong>
+            <small>To Use</small>
+          </div>
+
+          <div>
+            <strong>Simple</strong>
+            <small>Interface</small>
+          </div>
         </div>
+
       </div>
-    </div>
-  </section>
 
-  <section class="result-section">
-    <div id="status" class="status" role="status" aria-live="polite"></div>
+    </section>
 
-    <div id="previewArea" class="preview-card hidden">
-      <div class="preview-heading">
-        <div>
-          <span class="eyebrow">VIDEO PREVIEW</span>
-          <h2>Your Video</h2>
+
+    <!-- VIDEO DOWNLOADER -->
+    <section class="downloader-section" id="downloader">
+
+      <div class="container">
+
+        <div class="section-heading">
+          <span class="section-label">VIDEO TOOL</span>
+
+          <h2>Analyze Your <span>Video Link</span></h2>
+
+          <p>
+            Paste a direct video URL or a supported platform link below.
+          </p>
         </div>
-        <span class="ready-label">READY</span>
-      </div>
 
-      <video id="videoPreview" controls playsinline preload="metadata"></video>
 
-      <div class="video-details">
-        <div>
-          <span class="eyebrow">VIDEO NAME</span>
-          <h3 id="videoName">Your Video</h3>
+        <div class="downloader-card">
+
+          <div class="input-heading">
+            <label for="videoUrl">Paste Your Video Link</label>
+            <span>VIDEO URL</span>
+          </div>
+
+          <form id="videoForm">
+
+            <div class="input-wrapper">
+
+              <span class="input-icon">🔗</span>
+
+              <input
+                type="url"
+                id="videoUrl"
+                name="videoUrl"
+                placeholder="https://example.com/video.mp4"
+                autocomplete="url"
+                required
+              >
+
+              <button
+                type="button"
+                id="analyzeBtn"
+                class="analyze-button"
+              >
+                Analyze Link
+              </button>
+
+            </div>
+
+          </form>
+
+
+          <div class="platforms">
+
+            <span>LINK TYPES</span>
+
+            <div class="platform-list">
+              <span>YouTube</span>
+              <span>Instagram</span>
+              <span>TikTok</span>
+              <span>Facebook</span>
+              <span>X</span>
+              <span>Direct MP4</span>
+            </div>
+
+          </div>
+
+
+          <!-- STATUS MESSAGE -->
+          <div
+            id="statusMessage"
+            class="status-message"
+            role="status"
+            aria-live="polite"
+          ></div>
+
+
+          <!-- VIDEO PREVIEW -->
+          <div id="videoPreview" class="video-preview">
+
+            <div class="preview-heading">
+              <h3>Video Preview</h3>
+              <span class="preview-tag">PREVIEW</span>
+            </div>
+
+            <video
+              id="videoPlayer"
+              controls
+              playsinline
+              preload="metadata"
+            >
+              Your browser does not support video playback.
+            </video>
+
+            <button
+              type="button"
+              id="downloadBtn"
+              class="download-button"
+            >
+              <span>↓</span> Download Video
+            </button>
+
+          </div>
+
+          <p class="disclaimer">
+            Only download videos you own or have permission to download.
+            Platform links may require official integrations.
+          </p>
+
         </div>
-        <button id="downloadBtn" class="download-file-btn">
-          ↓ Download Video
-        </button>
+
       </div>
-    </div>
-  </section>
 
-  <section class="features section" id="features">
-    <div class="section-heading">
-      <span>WHY VIDORA?</span>
-      <h2>Everything you need.<br><em>Nothing you don't.</em></h2>
-      <p>A clean, modern experience for your video links.</p>
-    </div>
+    </section>
 
-    <div class="feature-grid">
-      <article class="feature-card">
-        <div class="feature-icon">⚡</div>
-        <h3>Fast Experience</h3>
-        <p>Quickly analyze supported video links and preview available files.</p>
-      </article>
 
-      <article class="feature-card">
-        <div class="feature-icon">◈</div>
-        <h3>Simple Interface</h3>
-        <p>Paste a link and explore the available options without unnecessary steps.</p>
-      </article>
+    <!-- FEATURES -->
+    <section class="features-section" id="features">
 
-      <article class="feature-card">
-        <div class="feature-icon">▣</div>
-        <h3>Mobile Friendly</h3>
-        <p>Enjoy VIDORA across desktop, tablet and mobile devices.</p>
-      </article>
-    </div>
-  </section>
+      <div class="container">
 
-  <section class="how section" id="how">
-    <div class="section-heading">
-      <span>HOW IT WORKS</span>
-      <h2>Three simple steps.</h2>
-    </div>
+        <div class="section-heading">
+          <span class="section-label">OUR FEATURES</span>
 
-    <div class="steps-grid">
-      <article class="step-card">
-        <span>01</span>
-        <h3>Copy Your Link</h3>
-        <p>Copy a video link you are authorized to access.</p>
-      </article>
+          <h2>Why Choose <span>VIDORA?</span></h2>
 
-      <article class="step-card">
-        <span>02</span>
-        <h3>Paste & Analyze</h3>
-        <p>Paste the URL and check its source compatibility.</p>
-      </article>
+          <p>
+            A clean and straightforward experience for supported video links.
+          </p>
+        </div>
 
-      <article class="step-card">
-        <span>03</span>
-        <h3>Preview & Download</h3>
-        <p>Preview compatible video files and download when permitted.</p>
-      </article>
-    </div>
-  </section>
 
-  <section class="about section">
-    <div>
-      <span>ABOUT VIDORA</span>
-      <h2>Your links.<br>Your experience.</h2>
+        <div class="features-grid">
+
+          <article class="feature-card">
+            <div class="feature-icon">⚡</div>
+            <h3>Quick Analysis</h3>
+            <p>
+              Quickly identify the source and type of your video link.
+            </p>
+          </article>
+
+          <article class="feature-card">
+            <div class="feature-icon">▶</div>
+            <h3>Video Preview</h3>
+            <p>
+              Preview compatible direct video files in your browser.
+            </p>
+          </article>
+
+          <article class="feature-card">
+            <div class="feature-icon">↓</div>
+            <h3>Direct Download</h3>
+            <p>
+              Try downloading supported direct video file URLs.
+            </p>
+          </article>
+
+          <article class="feature-card">
+            <div class="feature-icon">🔒</div>
+            <h3>Simple & Secure</h3>
+            <p>
+              Your pasted URL is checked by our basic backend service.
+            </p>
+          </article>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- HOW IT WORKS -->
+    <section class="how-section" id="how-it-works">
+
+      <div class="container">
+
+        <div class="section-heading">
+          <span class="section-label">HOW IT WORKS</span>
+
+          <h2>Three Simple <span>Steps</span></h2>
+
+          <p>Get started with VIDORA in a few simple steps.</p>
+        </div>
+
+
+        <div class="steps-grid">
+
+          <div class="step-card">
+            <span class="step-number">01</span>
+            <h3>Copy Link</h3>
+            <p>Copy a direct video URL or supported platform link.</p>
+          </div>
+
+          <div class="step-card">
+            <span class="step-number">02</span>
+            <h3>Analyze Link</h3>
+            <p>Paste your URL and let VIDORA identify its source.</p>
+          </div>
+
+          <div class="step-card">
+            <span class="step-number">03</span>
+            <h3>Preview & Download</h3>
+            <p>Preview or download compatible videos when permitted.</p>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ABOUT -->
+    <section class="about-section" id="about">
+
+      <div class="container">
+
+        <div class="about-card">
+
+          <span class="section-label">ABOUT VIDORA</span>
+
+          <h2>Simple. Clean. <span>Useful.</span></h2>
+
+          <p>
+            VIDORA is a video link utility designed to make
+            link analysis and supported video access simple.
+            We aim to provide a clean experience without
+            unnecessary complications.
+          </p>
+
+          <a href="#downloader" class="primary-button">
+            Try VIDORA →
+          </a>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- FOOTER -->
+  <footer class="footer">
+
+    <div class="container footer-content">
+
+      <a href="#home" class="logo">
+        <span class="logo-icon">▶</span>
+        VIDORA<span class="logo-dot">.</span>
+      </a>
+
       <p>
-        VIDORA is a video utility designed to make
-        authorized video previewing and file downloads
-        simple and convenient.
+        © 2026 VIDORA. All rights reserved.
       </p>
+
+      <a href="#home">Back to top ↑</a>
+
     </div>
-    <div class="about-symbol">V<span>.</span></div>
-  </section>
-</main>
 
-<footer>
-  <a href="#" class="logo">VID<span>ORA</span><b>.</b></a>
-  <p>© 2026 VIDORA. All rights reserved.</p>
-  <a href="#home">Back to top ↑</a>
-</footer>
+    <p class="footer-disclaimer">
+      VIDORA does not bypass DRM, login restrictions, or platform protections.
+    </p>
 
-<script src="script.js"></script>
+  </footer>
+
 </body>
 </html>
