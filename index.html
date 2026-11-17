@@ -4,11 +4,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="VIDORA - Preview and download authorized video files with ease.">
+  <meta name="theme-color" content="#ffffff">
 
-  <meta name="description" content="VIDORA - A modern video preview and download utility.">
-  <meta name="theme-color" content="#090909">
-
-  <title>VIDORA | Video Downloader</title>
+  <title>VIDORA | Smart Video Utility</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,13 +18,8 @@
 
 <body>
 
-  <!-- NAVIGATION -->
-
   <header class="navbar">
-
-    <a href="#" class="logo">
-      VID<span>ORA</span><small>.</small>
-    </a>
+    <a href="#home" class="logo">VID<span>ORA</span><small>.</small></a>
 
     <nav class="nav-links">
       <a href="#home">Home</a>
@@ -33,19 +27,12 @@
       <a href="#how">How It Works</a>
     </nav>
 
-    <a href="#home" class="nav-button">
-      Get Started <span>↗</span>
-    </a>
-
+    <a href="#home" class="nav-button">Get Started <span>↗</span></a>
   </header>
-
-
-  <!-- HERO SECTION -->
 
   <main>
 
     <section class="hero" id="home">
-
       <div class="hero-glow"></div>
 
       <div class="hero-content">
@@ -55,23 +42,15 @@
           YOUR VIDEO UTILITY
         </div>
 
-        <h1>
-          Your Videos.<br>
-          <span>One Destination.</span>
-        </h1>
+        <h1>Your Videos.<br><span>One Destination.</span></h1>
 
         <p class="hero-description">
-          Paste your video link, preview supported content
-          and download videos you are authorized to access.
+          Paste a video link, preview compatible content
+          and download video files you are authorized to access.
         </p>
 
-
-        <!-- URL INPUT -->
-
-        <div class="download-card">
-
+        <form class="download-card" id="videoForm">
           <div class="input-wrapper">
-
             <span class="input-icon">↗</span>
 
             <input
@@ -80,306 +59,155 @@
               placeholder="Paste your video link here..."
               autocomplete="url"
               spellcheck="false"
+              required
             >
 
-            <button
-              type="button"
-              id="clearBtn"
-              class="clear-button"
-              aria-label="Clear URL"
-            >
-              ✕
-            </button>
-
+            <button type="button" id="clearBtn" class="clear-button" aria-label="Clear URL">✕</button>
           </div>
 
-          <button
-            type="button"
-            id="previewBtn"
-            class="download-button"
-          >
+          <button type="submit" id="previewBtn" class="download-button">
             <span id="buttonText">Analyze Link</span>
             <span>→</span>
           </button>
-
-        </div>
-
+        </form>
 
         <p class="input-hint">
-          Supports direct video files and compatible video sources.
+          Supports direct MP4, WebM and other compatible video files.
         </p>
 
-
-        <!-- PLATFORM LIST -->
-
         <div class="platforms">
-
-          <span>SUPPORTED SOURCE TYPES</span>
+          <span>LINK COMPATIBILITY</span>
 
           <div class="platform-list">
-
-            <div class="platform-item">
-              <span class="youtube-icon">▶</span>
-              YouTube
-            </div>
-
-            <div class="platform-item">
-              <span class="instagram-icon">◎</span>
-              Instagram
-            </div>
-
-            <div class="platform-item">
-              <span class="tiktok-icon">♪</span>
-              TikTok
-            </div>
-
-            <div class="platform-item">
-              <span class="facebook-icon">f</span>
-              Facebook
-            </div>
-
-            <div class="platform-item">
-              <span class="twitter-icon">𝕏</span>
-              X
-            </div>
-
-            <div class="platform-item">
-              <span class="direct-icon">↓</span>
-              Direct URL
-            </div>
-
+            <div class="platform-item"><span class="youtube-icon">▶</span>YouTube</div>
+            <div class="platform-item"><span class="instagram-icon">◎</span>Instagram</div>
+            <div class="platform-item"><span class="tiktok-icon">♪</span>TikTok</div>
+            <div class="platform-item"><span class="facebook-icon">f</span>Facebook</div>
+            <div class="platform-item"><span class="twitter-icon">𝕏</span>X</div>
+            <div class="platform-item"><span class="direct-icon">↓</span>Direct Video</div>
           </div>
-
         </div>
 
       </div>
-
     </section>
-
-
-    <!-- STATUS MESSAGE -->
 
     <section class="result-section">
 
-      <div id="status" class="status-message" role="status" aria-live="polite">
-      </div>
-
-
-      <!-- VIDEO PREVIEW -->
+      <div id="status" class="status-message" role="status" aria-live="polite"></div>
 
       <div id="previewArea" class="preview-card hidden">
 
         <div class="preview-header">
-
           <div>
             <span class="preview-label">VIDEO PREVIEW</span>
             <h2>Your Video</h2>
           </div>
 
-          <span class="preview-status">
-            READY
-          </span>
-
+          <span class="preview-status">READY</span>
         </div>
 
-        <video
-          id="videoPreview"
-          controls
-          playsinline
-          preload="metadata"
-        ></video>
+        <video id="videoPreview" controls playsinline preload="metadata"></video>
 
         <div class="video-details">
-
           <div class="video-info">
             <span class="info-label">VIDEO NAME</span>
             <h3 id="videoName">Your Video</h3>
           </div>
 
-          <button
-            type="button"
-            id="downloadBtn"
-            class="file-download-button"
-          >
+          <button type="button" id="downloadBtn" class="file-download-button">
             ↓ Download Video
           </button>
-
         </div>
 
       </div>
-
     </section>
-
-
-    <!-- FEATURES -->
 
     <section class="features-section" id="features">
 
       <div class="section-title">
-
         <span>WHY VIDORA?</span>
-
-        <h2>
-          Everything you need.<br>
-          <span>Nothing you don't.</span>
-        </h2>
-
-        <p>
-          A simple and modern experience for your video links.
-        </p>
-
+        <h2>Everything you need.<br><span>Nothing you don't.</span></h2>
+        <p>A simple and modern experience for your video links.</p>
       </div>
-
 
       <div class="feature-grid">
 
         <article class="feature-card">
-
           <div class="feature-icon">⚡</div>
-
           <h3>Fast Experience</h3>
-
-          <p>
-            Quickly analyze supported video links
-            and access available video previews.
-          </p>
-
+          <p>Quickly analyze supported video links and access available previews.</p>
         </article>
 
-
         <article class="feature-card">
-
           <div class="feature-icon">◈</div>
-
           <h3>Simple Interface</h3>
-
-          <p>
-            No complicated process.
-            Just paste a link and explore available options.
-          </p>
-
+          <p>No complicated process. Just paste a link and explore compatible options.</p>
         </article>
-
 
         <article class="feature-card">
-
           <div class="feature-icon">▣</div>
-
           <h3>Mobile Friendly</h3>
-
-          <p>
-            Enjoy a clean and responsive experience
-            across different screen sizes.
-          </p>
-
+          <p>Enjoy a clean and responsive experience across different screen sizes.</p>
         </article>
-
 
       </div>
-
     </section>
-
-
-    <!-- HOW IT WORKS -->
 
     <section class="how-section" id="how">
 
       <div class="section-title">
-
         <span>HOW IT WORKS</span>
-
         <h2>Three simple steps.</h2>
-
       </div>
-
 
       <div class="steps-grid">
 
-        <div class="step-card">
-
+        <article class="step-card">
           <span class="step-number">01</span>
-
           <h3>Copy Your Link</h3>
+          <p>Copy a video link or direct video file URL.</p>
+        </article>
 
-          <p>Copy the link of a video you are authorized to access.</p>
-
-        </div>
-
-
-        <div class="step-card">
-
+        <article class="step-card">
           <span class="step-number">02</span>
-
           <h3>Paste & Analyze</h3>
+          <p>Paste the URL into VIDORA and check compatibility.</p>
+        </article>
 
-          <p>Paste the URL into VIDORA and check source compatibility.</p>
-
-        </div>
-
-
-        <div class="step-card">
-
+        <article class="step-card">
           <span class="step-number">03</span>
-
           <h3>Preview & Download</h3>
-
           <p>Preview compatible files and download when permitted.</p>
-
-        </div>
+        </article>
 
       </div>
-
     </section>
-
-
-    <!-- ABOUT -->
 
     <section class="about-section">
 
       <div class="about-content">
-
         <span>ABOUT VIDORA</span>
-
-        <h2>
-          Your links.<br>
-          Your experience.
-        </h2>
-
+        <h2>Your links.<br>Your experience.</h2>
         <p>
           VIDORA is designed to make video previewing
           and authorized file downloads simple,
           convenient and accessible.
         </p>
-
       </div>
 
-      <div class="about-symbol">
-        V<span>.</span>
-      </div>
+      <div class="about-symbol">V<span>.</span></div>
 
     </section>
 
   </main>
 
-
-  <!-- FOOTER -->
-
   <footer class="footer">
+    <a href="#home" class="logo">VID<span>ORA</span><small>.</small></a>
 
-    <a href="#" class="logo">
-      VID<span>ORA</span><small>.</small>
-    </a>
+    <p>© 2026 VIDORA. All rights reserved.</p>
 
-    <p>
-      © 2026 VIDORA. All rights reserved.
-    </p>
-
-    <a href="#home" class="back-top">
-      Back to top ↑
-    </a>
-
+    <a href="#home" class="back-top">Back to top ↑</a>
   </footer>
-
 
   <script src="script.js"></script>
 
