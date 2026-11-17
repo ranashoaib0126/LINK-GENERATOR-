@@ -10,31 +10,40 @@ html {
 }
 
 body {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Inter, Arial, sans-serif;
   background: #090909;
   color: #fff;
   overflow-x: hidden;
 }
 
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
 .navbar {
-  height: 85px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  height: 82px;
   padding: 0 9%;
-  border-bottom: 1px solid #202020;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #242424;
+  background: #090909;
 }
 
 .logo {
   font-size: 27px;
-  font-weight: 900;
-  letter-spacing: -1px;
-  color: white;
-  text-decoration: none;
+  font-weight: 800;
+  letter-spacing: -1.5px;
 }
 
-.logo span {
+.logo span,
+.logo b {
   color: #fa414b;
+}
+
+.logo b {
+  font-size: 30px;
 }
 
 nav {
@@ -44,8 +53,7 @@ nav {
 
 nav a {
   color: #aaa;
-  text-decoration: none;
-  font-size: 14px;
+  font-size: 13px;
   transition: .3s;
 }
 
@@ -54,11 +62,9 @@ nav a:hover {
 }
 
 .nav-btn {
-  color: white;
-  text-decoration: none;
-  border: 1px solid #383838;
+  border: 1px solid #393939;
   border-radius: 8px;
-  padding: 12px 19px;
+  padding: 12px 18px;
   font-size: 13px;
   transition: .3s;
 }
@@ -69,29 +75,60 @@ nav a:hover {
 }
 
 .hero {
-  min-height: 690px;
-  padding: 110px 20px 90px;
+  position: relative;
+  min-height: 670px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   text-align: center;
-  background:
-    radial-gradient(ellipse at 50% 10%,
-    rgba(250,65,75,.13), transparent 55%);
+  padding: 90px 20px;
+  overflow: hidden;
 }
 
-.tag {
-  display: inline-block;
-  border: 1px solid #5a292c;
-  color: #ff737b;
-  background: #241214;
+.hero-glow {
+  position: absolute;
+  width: 600px;
+  height: 400px;
+  background: rgba(250,65,75,.12);
+  filter: blur(120px);
+  top: -150px;
+  left: 50%;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 850px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  border: 1px solid #51292c;
+  background: #211113;
+  padding: 10px 17px;
   border-radius: 30px;
-  padding: 9px 17px;
-  font-size: 11px;
+  color: #ff858b;
+  font-size: 10px;
   letter-spacing: 2px;
-  margin-bottom: 28px;
+  margin-bottom: 27px;
+}
+
+.dot {
+  width: 7px;
+  height: 7px;
+  background: #fa414b;
+  border-radius: 50%;
+  box-shadow: 0 0 12px #fa414b;
 }
 
 h1 {
-  font-size: clamp(43px, 7vw, 76px);
-  line-height: 1.1;
+  font-size: clamp(45px, 7vw, 76px);
+  line-height: 1.12;
   letter-spacing: -3px;
   font-weight: 800;
 }
@@ -101,44 +138,44 @@ h1 span {
 }
 
 .subtitle {
+  color: #999;
   max-width: 550px;
   margin: 23px auto 35px;
-  color: #999;
-  font-size: 16px;
-  line-height: 1.8;
+  font-size: 15px;
+  line-height: 1.9;
 }
 
 .download-box {
-  max-width: 760px;
+  max-width: 750px;
   margin: auto;
-  padding: 10px;
   display: flex;
   gap: 10px;
   background: #171717;
-  border: 1px solid #343434;
+  border: 1px solid #383838;
   border-radius: 13px;
+  padding: 9px;
 }
 
 .input-area {
-  display: flex;
-  align-items: center;
   flex: 1;
   min-width: 0;
-  padding: 0 13px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 12px;
 }
 
-.link-icon {
+.input-area > span {
   color: #fa414b;
-  font-size: 22px;
-  margin-right: 10px;
+  font-size: 23px;
 }
 
 .input-area input {
   flex: 1;
   min-width: 0;
+  background: transparent;
   border: none;
   outline: none;
-  background: transparent;
   color: white;
   font-size: 14px;
 }
@@ -147,100 +184,168 @@ h1 span {
   color: #777;
 }
 
-.clear-btn {
+.input-area button {
   border: none;
-  background: transparent;
+  background: none;
   color: #888;
   cursor: pointer;
   padding: 8px;
 }
 
 .main-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 17px 24px;
   background: #fa414b;
   color: white;
   border: none;
-  padding: 17px 23px;
   border-radius: 8px;
-  font-size: 14px;
-  font-weight: bold;
+  font-size: 13px;
+  font-weight: 700;
   cursor: pointer;
   transition: .3s;
 }
 
-.main-btn:hover {
-  background: #df2935;
+.main-btn:hover,
+.download-file-btn:hover {
+  background: #d92c38;
   transform: translateY(-2px);
 }
 
-.main-btn span {
-  margin-left: 10px;
+button:disabled {
+  opacity: .6;
+  cursor: wait;
+  transform: none;
 }
 
 .hint {
   color: #777;
   margin-top: 17px;
+  font-size: 11px;
+}
+
+.platforms {
+  margin-top: 48px;
+}
+
+.platforms > p {
+  color: #666;
+  font-size: 10px;
+  letter-spacing: 2px;
+  margin-bottom: 18px;
+}
+
+.platform-list {
+  display: flex;
+  justify-content: center;
+  gap: 13px;
+  flex-wrap: wrap;
+}
+
+.platform-list span {
+  padding: 10px 15px;
+  border: 1px solid #292929;
+  border-radius: 8px;
+  color: #aaa;
   font-size: 12px;
+  background: #111;
+}
+
+.result-section {
+  max-width: 800px;
+  margin: auto;
+  padding: 0 20px 50px;
 }
 
 .status {
-  margin: 20px auto;
-  font-size: 14px;
+  text-align: center;
+  font-size: 13px;
   color: #ff858b;
-  max-width: 600px;
+  margin-bottom: 20px;
+  line-height: 1.6;
 }
 
-.preview-area {
-  max-width: 760px;
-  margin: 35px auto 0;
-  padding: 20px;
+.status.success {
+  color: #4ade80;
+}
+
+.preview-card {
   background: #151515;
-  border: 1px solid #333;
-  border-radius: 14px;
-  text-align: left;
+  border: 1px solid #303030;
+  border-radius: 15px;
+  padding: 22px;
 }
 
-.preview-area h3 {
-  margin-bottom: 15px;
-}
-
-.preview-area video {
-  width: 100%;
-  max-height: 400px;
-  background: #000;
-  border-radius: 9px;
-}
-
-.video-actions {
+.preview-heading,
+.video-details {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 12px;
-  margin-top: 15px;
-  color: #aaa;
-  font-size: 13px;
+  gap: 15px;
+}
+
+.preview-heading {
+  margin-bottom: 20px;
+}
+
+.preview-heading h2 {
+  margin-top: 7px;
+  font-size: 21px;
+}
+
+.eyebrow {
+  color: #fa414b;
+  font-size: 10px;
+  letter-spacing: 2px;
+}
+
+.ready-label {
+  color: #4ade80;
+  font-size: 11px;
+  border: 1px solid #245c3c;
+  padding: 7px 12px;
+  border-radius: 20px;
+}
+
+.preview-card video {
+  width: 100%;
+  max-height: 420px;
+  background: #000;
+  border-radius: 10px;
+}
+
+.video-details {
+  margin-top: 20px;
+}
+
+.video-details h3 {
+  margin-top: 7px;
+  font-size: 14px;
   overflow-wrap: anywhere;
 }
 
-.video-actions button {
+.download-file-btn {
+  border: none;
   background: #fa414b;
   color: white;
-  border: none;
-  padding: 13px 18px;
-  border-radius: 7px;
-  font-weight: bold;
+  padding: 14px 18px;
+  border-radius: 8px;
+  font-weight: 700;
   cursor: pointer;
-}
-
-.video-actions button:hover {
-  background: #df2935;
+  transition: .3s;
 }
 
 .hidden {
-  display: none;
+  display: none !important;
+}
+
+.section {
+  padding: 95px 9%;
 }
 
 .features {
-  padding: 90px 9%;
   background: #101010;
 }
 
@@ -249,82 +354,130 @@ h1 span {
   margin-bottom: 45px;
 }
 
-.section-heading span,
-.about span {
+.section-heading > span,
+.about > div:first-child > span {
   color: #fa414b;
-  font-size: 12px;
+  font-size: 11px;
   letter-spacing: 3px;
 }
 
 .section-heading h2,
 .about h2 {
-  margin-top: 15px;
-  font-size: 36px;
-  letter-spacing: -1px;
+  font-size: clamp(30px, 4vw, 42px);
+  letter-spacing: -1.5px;
+  margin-top: 16px;
+  line-height: 1.25;
 }
 
-.feature-grid {
+.section-heading h2 em {
+  color: #fa414b;
+  font-style: normal;
+}
+
+.section-heading p {
+  color: #888;
+  margin-top: 15px;
+  font-size: 13px;
+}
+
+.feature-grid,
+.steps-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
 }
 
-.feature-card {
+.feature-card,
+.step-card {
   background: #181818;
   border: 1px solid #292929;
+  padding: 30px 25px;
   border-radius: 12px;
-  padding: 32px 25px;
   transition: .3s;
 }
 
-.feature-card:hover {
-  border-color: #fa414b;
+.feature-card:hover,
+.step-card:hover {
   transform: translateY(-5px);
+  border-color: #fa414b;
 }
 
 .feature-icon {
+  color: #fa414b;
   font-size: 30px;
+  margin-bottom: 20px;
+}
+
+.feature-card h3,
+.step-card h3 {
+  font-size: 17px;
+  margin-bottom: 12px;
+}
+
+.feature-card p,
+.step-card p {
+  color: #929292;
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.step-card {
+  background: #111;
+}
+
+.step-number {
+  display: block;
+  font-size: 30px;
+  font-weight: 800;
   color: #fa414b;
   margin-bottom: 20px;
 }
 
-.feature-card h3 {
-  margin-bottom: 12px;
-  font-size: 18px;
-}
-
-.feature-card p {
-  color: #999;
-  font-size: 14px;
-  line-height: 1.7;
-}
-
 .about {
-  text-align: center;
-  padding: 100px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
 }
 
 .about p {
   color: #999;
-  max-width: 570px;
-  margin: 20px auto 0;
-  line-height: 1.8;
+  max-width: 500px;
+  font-size: 14px;
+  line-height: 1.9;
+  margin-top: 20px;
+}
+
+.about-symbol {
+  font-size: 180px;
+  font-weight: 800;
+  color: #181818;
+}
+
+.about-symbol span {
+  color: #fa414b;
 }
 
 footer {
+  border-top: 1px solid #282828;
   padding: 30px 9%;
-  border-top: 1px solid #252525;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 20px;
 }
 
-footer p {
+footer p,
+footer > a:last-child {
   color: #777;
   font-size: 12px;
 }
 
-@media (max-width: 700px) {
+footer > a:last-child:hover {
+  color: #fa414b;
+}
+
+@media (max-width: 750px) {
   .navbar {
     padding: 0 5%;
     height: 72px;
@@ -335,7 +488,8 @@ footer p {
   }
 
   .hero {
-    padding-top: 80px;
+    min-height: 600px;
+    padding: 80px 18px;
   }
 
   h1 {
@@ -347,35 +501,38 @@ footer p {
   }
 
   .input-area {
-    min-height: 50px;
+    min-height: 48px;
   }
 
   .main-btn {
     width: 100%;
   }
 
-  .feature-grid {
+  .platform-list {
+    gap: 8px;
+  }
+
+  .feature-grid,
+  .steps-grid {
     grid-template-columns: 1fr;
   }
 
-  .features {
+  .section {
     padding: 70px 6%;
   }
 
-  .section-heading h2,
-  .about h2 {
-    font-size: 29px;
+  .about-symbol {
+    display: none;
   }
 
-  .video-actions {
+  .video-details {
     flex-direction: column;
     align-items: stretch;
   }
 
   footer {
     flex-direction: column;
-    gap: 15px;
     text-align: center;
+    padding: 30px 5%;
   }
 }
-v
