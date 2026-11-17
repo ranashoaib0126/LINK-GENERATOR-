@@ -1,222 +1,108 @@
 
-// =====================================
-// VIDORA - FRONTEND JAVASCRIPT
-// =====================================
+const express = require("express");
+const cors = require("cors");
 
-// IMPORTANT: Replace this with your actual Railway URL.
-const API_BASE = "https://YOUR-RAILWAY-DOMAIN.up.railway.app";
+const app = express();
+const PORT = process.env.PORT || 10000;
 
-// Find website elements
-const urlInput =
-  document.querySelector("#videoUrl") ||
-  document.querySelector("#urlInput") ||
-  document.querySelector("#videoLink") ||
-  document.querySelector('input[type="url"]') ||
-  document.querySelector("input");
+app.use(cors({
+  origin: [
+    "https://ranashoaib0126.github.io",
+    "http://localhost:5500"
+  ]
+}));
 
-const analyzeButton =
-  document.querySelector("#analyzeBtn") ||
-  document.querySelector("#analyze") ||
-  document.querySelector("#generateBtn");
+app.use(express.json({ limit: "10kb" }));
 
-const downloadButton =
-  document.querySelector("#downloadBtn") ||
-  document.querySelector("#download");
+app.get("/api/health", (req, res) => {
+  res.json({
+    success: true,
+    service: "VIDORA API",
+    status: "online"
+  });
+});
 
-const videoPlayer =
-  document.querySelector("#videoPlayer") ||
-  document.querySelector("#videoPreview video") ||
-  document.querySelector("video");
+function detectPlatform(host) {
+  if (host === "youtube.com" || host.endsWith(".youtube.com") ||
+      host === "youtu.be") return "YouTube";
 
-const statusElement =
-  document.querySelector("#statusMessage") ||
-  document.querySelector("#status") ||
-  document.querySelector("#result");
+  if (host === "instagram.com" ||
+      host.endsWith(".instagram.com")) return "Instagram";
 
-// Create a status message if HTML doesn't already have one
-function showStatus(message, type = "info") {
-  let element = statusElement;
+  if (host === "tiktok.com" ||
+      host.endsWith(".tiktok.com")) return "TikTok";
 
-  if (!element) {
-    element = document.createElement("p");
-    element.id = "vidoraStatus";
-    element.style.marginTop = "15px";
-    element.style.fontSize = "14px";
+  if (host === "x.com" || host === "twitter.com" ||
+      host.endsWith(".x.com")) return "X";
 
-    const parent = urlInput?.parentElement || document.body;
-    parent.appendChild(element);
-  }
+  if (host === "facebook.com" ||
+      host.endsWith(".facebook.com") ||
+      host === "fb.watch") return "Facebook";
 
-  element.textContent = message;
-  element.style.color =
-    type === "error" ? "#ff5252" :
-    type === "success" ? "#22c55e" : "#ffffff";
+  return "Other";
 }
 
-// Check URL
-function getVideoUrl() {
-  const value = urlInput?.value?.trim();
+app.post("/api/inspect", (req, res) => {
+  const { url } = req.body || {};
 
-  if (!value) {
-    showStatus("Please paste a video link first.", "error");
-    return null;
-  }
-
-  try {
-    const parsed = new URL(value);
-
-    if (!["http:", "https:"].includes(parsed.protocol)) {
-      throw new Error("Invalid protocol");
-    }
-
-    return parsed.href;
-  } catch {
-    showStatus("Please enter a valid URL.", "error");
-    return null;
-  }
-}
-
-// Ask backend to inspect the URL
-async function inspectVideo() {
-  const url = getVideoUrl();
-  if (!url) return;
-
-  showStatus("Checking your video link...");
-
-  try {
-    const response = await fetch(`${API_BASE}/api/inspect`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ url })
+  if (!url || typeof url !== "string" || url.length > 2048) {
+    return res.status(400).json({
+      success: false,
+      message: "Please provide a valid video URL."
     });
-
-    const data = await response.json();
-
-    if (!response.ok || !data.success) {
-      throw new Error(data.message || "Could not inspect this link.");
-    }
-
-    showStatus(
-      `${data.platform}: ${data.message}`,
-      data.isDirectVideo ? "success" : "info"
-    );
-
-    if (data.isDirectVideo) {
-      previewVideo(url);
-    } else {
-      showStatus(
-        `${data.platform} link detected. This link needs an authorized platform integration; it cannot be downloaded by this basic version.`
-      );
-    }
-  } catch (error) {
-    console.error("VIDORA error:", error);
-    showStatus(
-      "Could not connect to the backend. Check your Railway URL and deployment.",
-      "error"
-    );
-  }
-}
-
-// Preview direct video
-function previewVideo(url) {
-  if (!videoPlayer) {
-    showStatus(
-      "Direct video detected. Your HTML needs a video element for preview.",
-      "success"
-    );
-    return;
   }
 
-  videoPlayer.src = url;
-  videoPlayer.load();
-
-  videoPlayer.style.display = "block";
-  showStatus("Video detected. Loading preview...", "success");
-}
-
-// Download direct video
-async function downloadVideo() {
-  const url = getVideoUrl();
-  if (!url) return;
-
-  showStatus("Checking video download...");
+  let parsed;
 
   try {
-    const parsed = new URL(url);
-    const isVideoFile = /\.(mp4|webm|mov|m4v)$/i.test(parsed.pathname);
-
-    if (!isVideoFile) {
-      showStatus(
-        "This is not a direct video file link. Use a source that provides an authorized download.",
-        "error"
-      );
-      return;
-    }
-
-    const response = await fetch(url);
-
-    if (!response.ok) {
-      throw new Error("Video could not be downloaded.");
-    }
-
-    const blob = await response.blob();
-
-    if (!blob.type.startsWith("video/")) {
-      throw new Error("The link did not return a video file.");
-    }
-
-    const blobUrl = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-
-    link.href = blobUrl;
-    link.download = "VIDORA-video.mp4";
-
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-
-    setTimeout(() => URL.revokeObjectURL(blobUrl), 60000);
-
-    showStatus("Your video download has started!", "success");
-  } catch (error) {
-    console.error("Download error:", error);
-
-    showStatus(
-      "Download blocked. The video host may not allow browser downloads (CORS). Try an authorized download link.",
-      "error"
-    );
+    parsed = new URL(url);
+  } catch {
+    return res.status(400).json({
+      success: false,
+      message: "Invalid URL."
+    });
   }
-}
 
-// Connect buttons
-if (analyzeButton) {
-  analyzeButton.addEventListener("click", inspectVideo);
-}
+  if (!["https:", "http:"].includes(parsed.protocol) ||
+      parsed.username || parsed.password) {
+    return res.status(400).json({
+      success: false,
+      message: "Only public HTTP/HTTPS URLs are accepted."
+    });
+  }
 
-if (downloadButton) {
-  downloadButton.addEventListener("click", downloadVideo);
-}
+  const host = parsed.hostname.toLowerCase();
+  const platform = detectPlatform(host);
 
-// Also support pressing Enter in the input
-if (urlInput) {
-  urlInput.addEventListener("keydown", (event) => {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      inspectVideo();
-    }
+  const isDirectVideo =
+    /\.(mp4|webm|mov|m4v)$/i.test(parsed.pathname);
+
+  let message;
+
+  if (isDirectVideo) {
+    message = "Direct video URL detected. Preview it in VIDORA.";
+  } else if (platform === "YouTube") {
+    message = "YouTube link detected. Use the official video player.";
+  } else if (platform === "Instagram") {
+    message = "Instagram link detected. Authorized media access is required.";
+  } else if (platform === "TikTok") {
+    message = "TikTok link detected. Use supported official integrations.";
+  } else if (platform === "X") {
+    message = "X link detected. Downloads depend on creator permissions.";
+  } else if (platform === "Facebook") {
+    message = "Facebook link detected. Authorized media access is required.";
+  } else {
+    message = "Other link detected. Direct video URLs are supported.";
+  }
+
+  res.json({
+    success: true,
+    platform,
+    isDirectVideo,
+    message
   });
-}
+});
 
-// Support forms
-const videoForm = document.querySelector("#videoForm");
-
-if (videoForm) {
-  videoForm.addEventListener("submit", (event) => {
-    event.preventDefault();
-    inspectVideo();
-  });
-}
-
-console.log("VIDORA frontend JavaScript loaded.");
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`VIDORA API running on port ${PORT}`);
+});
